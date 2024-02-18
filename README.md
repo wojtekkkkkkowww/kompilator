@@ -4,7 +4,7 @@ Wojciech Kowalczyk 268486
 ### Środowisko
 * Python - v.```3.10.12```
 * sly - v.```0.5```
-Do systemu Ubuntu należy doinstalowac biblioteke sly 
+Do systemu Ubuntu należy doinstalowac bibliotekę sly 
 np. ``` pip install sly ```
 ### Pliki
 * ```Lexer.py``` - lexer
