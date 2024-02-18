@@ -1,16 +1,13 @@
 c = 0
 
 
-# FUNKCJA PRZENOSI VAR DO REJESTRU  
-# wykorzystuje rejestr {a} + reg
+
 def load_var(var,reg):
     codeBlock = []
     codeBlock += load_from_mem(var,0,reg)
         
     return codeBlock
 
-# funkcja zapisuje do pamieci z rejestru 
-# wykorzystuje {a,h} + reg 
 def save_to_mem(reg,var,of): 
     codeBlock = []
     if reg != 'a':
@@ -20,8 +17,6 @@ def save_to_mem(reg,var,of):
     return codeBlock
 
 
-#funkcja wczytuje z pamieci do rejestru
-#wykorzystuje rejestr {a} + reg
 def load_from_mem(var,of,reg):
     codeBlock = []
     codeBlock += load_num(var.mem + of,reg)
@@ -31,14 +26,11 @@ def load_from_mem(var,of,reg):
     return codeBlock
 
 
-#wykorzystuje rejestry {a,h} + reg
-#funkcja wczytuje wartosc z arraya A[i] do rejestru
 def load_arr(var1,var2,reg):
     codeBLock = []
-    codeBLock += load_var(var2,'h') # uzywa rejestru a i h
+    codeBLock += load_var(var2,'h') 
     
-    #to jest array wirec on musi byc w pamieci
-    codeBLock += load_num(var1.mem,'a') # ten tak wlasciwie tylko rejestu a
+    codeBLock += load_num(var1.mem,'a') 
     
     codeBLock.append("ADD h")
     codeBLock.append("LOAD a")
@@ -46,18 +38,16 @@ def load_arr(var1,var2,reg):
         codeBLock.append(f"PUT {reg}")
     return codeBLock
 
-#funkcja wczytuje wartosc z rejestru do arraya VAR1[VAR2]
-def save_arr(reg,var1,var2): #uzywa azz 3 rejestrow
+def save_arr(reg,var1,var2): 
     codeBlock = []
     if reg != 'a' and reg != 'g':
         codeBlock.append(f"GET {reg}")
     if reg != 'g':
-        codeBlock.append("PUT g") # musze wiedziec jaka wartosc mialem zapisac    
-
+        codeBlock.append("PUT g") 
+        
     codeBlock += load_var(var2,'h') 
     codeBlock += load_num(var1.mem,'a')  
     codeBlock.append("ADD h")
-    # w tym momencie w rejestrze a mam wartosc mem + var2 czyli moj indeks
     codeBlock.append("PUT h")
     codeBlock.append("GET g")
     codeBlock.append("STORE h")
@@ -65,7 +55,6 @@ def save_arr(reg,var1,var2): #uzywa azz 3 rejestrow
 
 
 def gen_expression(op, k = 0):
-    # zalozenie poczotkowe dodaje rejestry: a i h 
     codeBlock = []
     if op == '+':
         codeBlock.append("ADD h")
@@ -216,9 +205,6 @@ def make_mod(k):
 
 
 
-#zamianna na pomocnicza tablice 
-# w ktorej dana liczba mowi o liczbie powtarzanych jedynek 
-#np. 11111011001 = [5,0,2,0,0,1]
 def prep_num(num):
     bin_r = bin(num)[2:]
     ones = 0
@@ -237,7 +223,6 @@ def prep_num(num):
     return l
 
 def load_num(num, reg):
-    #sledzenie wartosci c podczas dzialania programu jest nieslychanie trudne !!!!!
     codeBlock = []
     b = prep_num(num)
     if b[0] == 0:
